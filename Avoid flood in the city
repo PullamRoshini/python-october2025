@@ -1,0 +1,20 @@
+n = len(rains)
+        ans = [-1]*n
+        lake_full = {}
+        dry_days = []
+
+        for i, lake in enumerate(rains):
+            if lake == 0:
+                dry_days.append(i)
+                ans[i] = 1  # default, will adjust later
+            else:
+                if lake in lake_full:
+                    # find a dry day after lake_full[lake]
+                    j = bisect.bisect_right(dry_days, lake_full[lake])
+                    if j == len(dry_days):
+                        return []
+                    dry_day = dry_days.pop(j)
+                    ans[dry_day] = lake
+                lake_full[lake] = i
+                ans[i] = -1
+        return ans
