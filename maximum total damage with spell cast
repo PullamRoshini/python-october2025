@@ -1,0 +1,17 @@
+class Solution:
+    def maximumTotalDamage(self, power: List[int]) -> int:
+        cnt = Counter(power)
+        vals = sorted(cnt.keys())
+        m = len(vals)
+        nxt = [0]*m
+        from bisect import bisect_right
+        for i,v in enumerate(vals):
+            nxt[i] = bisect_right(vals,v + 2)
+        dp = [0] * (m + 1)
+        for i in range(m-1,-1,-1):
+            skip = dp[i+1]
+            take = vals[i] * cnt[vals[i]]
+            if nxt[i] <= m:
+                take += dp[nxt[i]]
+            dp[i] = max(skip,take)
+        return dp[0]
