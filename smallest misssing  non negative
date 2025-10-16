@@ -1,0 +1,13 @@
+class Solution:
+    def findSmallestInteger(self, nums: List[int], value: int) -> int:
+        from collections import Counter
+        remainder_count=Counter([(num% value+value)%value for num in nums])
+        i=0
+        while True:
+            r=i%value
+            if remainder_count[r]>0:
+                remainder_count[r]-=1
+            else:
+                return i
+            i+=1
+        
